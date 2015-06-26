@@ -1,7 +1,6 @@
 using System;
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Metadata;
-using Microsoft.Data.Entity.Metadata.Builders;
 using Microsoft.Data.Entity.Relational.Migrations.Infrastructure;
 using ContosoBooks.Models;
 
@@ -10,52 +9,51 @@ namespace ContosoBooks.Migrations
     [ContextType(typeof(BookContext))]
     partial class BookContextModelSnapshot : ModelSnapshot
     {
-        public override IModel Model
+        public override void BuildModel(ModelBuilder builder)
         {
-            get
-            {
-                var builder = new BasicModelBuilder()
-                    .Annotation("SqlServer:ValueGeneration", "Sequence");
-                
-                builder.Entity("ContosoBooks.Models.Author", b =>
-                    {
-                        b.Property<int>("AuthorID")
-                            .GenerateValueOnAdd()
-                            .Annotation("OriginalValueIndex", 0)
-                            .Annotation("SqlServer:ValueGeneration", "Default");
-                        b.Property<string>("FirstMidName")
-                            .Annotation("OriginalValueIndex", 1);
-                        b.Property<string>("LastName")
-                            .Annotation("OriginalValueIndex", 2);
-                        b.Key("AuthorID");
-                    });
-                
-                builder.Entity("ContosoBooks.Models.Book", b =>
-                    {
-                        b.Property<int>("AuthorID")
-                            .Annotation("OriginalValueIndex", 0);
-                        b.Property<int>("BookID")
-                            .GenerateValueOnAdd()
-                            .Annotation("OriginalValueIndex", 1)
-                            .Annotation("SqlServer:ValueGeneration", "Default");
-                        b.Property<string>("Genre")
-                            .Annotation("OriginalValueIndex", 2);
-                        b.Property<decimal>("Price")
-                            .Annotation("OriginalValueIndex", 3);
-                        b.Property<string>("Title")
-                            .Annotation("OriginalValueIndex", 4);
-                        b.Property<int>("Year")
-                            .Annotation("OriginalValueIndex", 5);
-                        b.Key("BookID");
-                    });
-                
-                builder.Entity("ContosoBooks.Models.Book", b =>
-                    {
-                        b.ForeignKey("ContosoBooks.Models.Author", "AuthorID");
-                    });
-                
-                return builder.Model;
-            }
+            builder
+                .Annotation("SqlServer:DefaultSequenceName", "DefaultSequence")
+                .Annotation("SqlServer:Sequence:.DefaultSequence", "'DefaultSequence', '', '1', '10', '', '', 'Int64', 'False'")
+                .Annotation("SqlServer:ValueGeneration", "Sequence");
+            
+            builder.Entity("ContosoBooks.Models.Author", b =>
+                {
+                    b.Property<int>("AuthorID")
+                        .GenerateValueOnAdd()
+                        .StoreGeneratedPattern(StoreGeneratedPattern.Identity);
+                    
+                    b.Property<string>("FirstMidName");
+                    
+                    b.Property<string>("LastName");
+                    
+                    b.Key("AuthorID");
+                });
+            
+            builder.Entity("ContosoBooks.Models.Book", b =>
+                {
+                    b.Property<int>("BookID")
+                        .GenerateValueOnAdd()
+                        .StoreGeneratedPattern(StoreGeneratedPattern.Identity);
+                    
+                    b.Property<int>("AuthorID");
+                    
+                    b.Property<string>("Genre");
+                    
+                    b.Property<decimal>("Price");
+                    
+                    b.Property<string>("Title");
+                    
+                    b.Property<int>("Year");
+                    
+                    b.Key("BookID");
+                });
+            
+            builder.Entity("ContosoBooks.Models.Book", b =>
+                {
+                    b.Reference("ContosoBooks.Models.Author")
+                        .InverseCollection()
+                        .ForeignKey("AuthorID");
+                });
         }
     }
 }
