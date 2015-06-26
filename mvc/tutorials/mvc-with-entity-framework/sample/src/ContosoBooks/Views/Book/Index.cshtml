@@ -4,9 +4,6 @@
 }
 <p>
     <a asp-action="Create">Create New Book</a>
-    @*<a asp-action="Edit" asp-route-id="2">Edit</a> |
-        <a asp-action="Details" asp-route-id="2">Details</a> |
-        <a asp-action="Delete" asp-route-id="2">Delete</a>*@
 </p>
 
 <table class="table">
@@ -29,14 +26,9 @@
                 @Html.DisplayFor(modelItem => item.Author.LastName)
             </td>
             <td>
-                @*<a asp-action="Edit" asp-route-id="2">Edit2</a> |*@
-
                 <a asp-action="Edit" asp-route-id="@item.BookID">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.BookID">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.BookID">Delete</a>
-                @*@Html.ActionLink("Details", "Details", "Todo", new { id = item.BookID }) |
-                @Html.ActionLink("Edit", "Edit", "Todo", new { id = item.BookID }) |
-                @Html.ActionLink("Delete", "Delete", "Todo", new { id = item.BookID })*@
             </td>
         </tr>
     }
